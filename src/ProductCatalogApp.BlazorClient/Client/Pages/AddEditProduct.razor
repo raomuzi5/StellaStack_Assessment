@@ -1,0 +1,45 @@
+﻿@page "/product/edit/{id:int}"
+@using ProductCatalogApp.BlazorClient.Client.Services
+@using ProductCatalogApp.BlazorClient.Shared
+@inject IProductService ProductService
+@inject NavigationManager Navigation
+
+<h3>@(Product.Id == 0 ? "Add" : "Edit") Product</h3>
+
+<EditForm Model="@Product" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText @bind-Value="Product.Name" placeholder="Product Name" />
+    <InputText @bind-Value="Product.Description" placeholder="Description" />
+    <InputNumber @bind-Value="Product.Price" placeholder="Price" />
+
+    <button type="submit">Save</button>
+</EditForm>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private ProductDto Product { get; set; } = new ProductDto();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != 0)
+        {
+            Product = await ProductService.GetByIdAsync(Id);
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        if (Product.Id == 0)
+        {
+            await ProductService.CreateAsync(Product);
+        }
+        else
+        {
+            await ProductService.UpdateAsync(Product);
+        }
+
+        Navigation.NavigateTo("/products");
+    }
+}

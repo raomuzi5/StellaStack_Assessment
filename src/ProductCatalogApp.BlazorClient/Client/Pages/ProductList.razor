@@ -1,0 +1,23 @@
+﻿@page "/products"
+@using ProductCatalogApp.BlazorClient.Client.Services
+@inject IProductService ProductService
+@using ProductCatalogApp.BlazorClient.Shared
+<PageTitle>Products</PageTitle>
+
+<h3>Products</h3>
+
+<ul>
+    @foreach (var product in products)
+    {
+        <li>@product.Name - @product.Price</li>
+    }
+</ul>
+
+@code {
+    private IEnumerable<ProductDto> products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetAllAsync();
+    }
+}

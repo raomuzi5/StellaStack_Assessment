@@ -1,5 +1,9 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
-
-/tests/ProductCatalogApp.UnitTests/obj/project.nuget.cache
+﻿# Ignore Visual Studio temp files, build results, and more
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.log

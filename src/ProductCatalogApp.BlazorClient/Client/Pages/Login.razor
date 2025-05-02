@@ -1,0 +1,29 @@
+﻿@page "/login"
+@using ProductCatalogApp.BlazorClient.Client.DTOs
+@inject IAuthenticationService AuthenticationService
+@inject NavigationManager Navigation
+
+<EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <InputText @bind-Value="loginModel.Username" placeholder="Username" />
+    <InputText @bind-Value="loginModel.Password" type="password" placeholder="Password" />
+    <button type="submit">Login</button>
+</EditForm>
+
+@code {
+    private LoginModel loginModel = new LoginModel();
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            var token = await AuthenticationService.Login(loginModel.Username, loginModel.Password);
+            Navigation.NavigateTo("/dashboard");
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+        }
+    }
+}
